@@ -1,0 +1,14 @@
+name: Build Vote App
+
+on:
+  [workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag local-example-voting-app:v1
+    - name: scanning the local-example-voting-app
+      run: SECURE_API_TOKEN=f56cc45b-78b9-4beb-b3b7-80bc72273886 ./sysdig-cli-scanner --iac -r -f H --apiurl=https://app.au1.sysdig.com example-voting-app
